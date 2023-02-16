@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+{% block content %}
+    <div class="">
+        <h1>{{ post.title }}</h1>
+        <div style="display: flex;">
+            <div>
+                <p class="me-1">{{ post.desc }}</p>
+            </div>
+            <div>
+                <h6>created {{ post.created|timesince }} ago </h6>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
