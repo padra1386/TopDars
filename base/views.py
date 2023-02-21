@@ -1,24 +1,47 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
 from .forms import MyUserCreationForm
-from .models import studySummary
+from .models import studySummary, Topic
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
 
-
 # Create your views here.
+@login_required(login_url='login')
 def homePage(request):
     labels = []
     data = []
-    posts_q = studySummary.objects.all()
+    posts_q = Topic.objects.filter(host=request.user)
     for city in posts_q:
-        labels.append(city.title)
+        labels.append(city.name)
         data.append(city.data)
 
-    context = {'labels': labels, 'data': data}
+    def _sum(arr):
+
+        # initialize a variable
+        # to store the sum
+        # while iterating through
+        # the array later
+        arr_sum = 0
+
+        # iterate through the array
+        # and add each element to the sum variable
+        # one at a time
+        for i in arr:
+            arr_sum = arr_sum + i
+
+        return (arr_sum)
+
+    ans = _sum(data)
+    try:
+        data_average = (ans / len(data))
+    except:
+        data_average = 0
+    context = {'labels': labels, 'data': data, 'data_avg': data_average, 'ans': ans}
     return render(request, 'base/index.html', context)
+
 
 def registerPage(request):
     form = MyUserCreationForm()
@@ -57,8 +80,8 @@ def loginPage(request):
 
         if user is not None:
             login(request, user)
+            return redirect('home')
         else:
             messages.error(request, 'نام کاربری یا رمز عبور ناموجود است')
-        
 
     return render(request, 'base/login.html')
