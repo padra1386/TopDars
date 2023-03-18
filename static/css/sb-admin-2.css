@@ -47,6 +47,11 @@
   box-sizing: border-box;
 }
 
+* {
+  font-family: Vazir;
+}
+
+
 html {
   font-family: sans-serif;
   line-height: 1.15;
@@ -4461,6 +4466,7 @@ input[type="button"].btn-block {
 .navbar-dark .navbar-nav .nav-link.active {
   color: #fff;
 }
+
 
 .navbar-dark .navbar-toggler {
   color: rgba(255, 255, 255, 0.5);
