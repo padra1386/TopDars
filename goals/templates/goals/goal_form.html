@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <title>ثبت نام</title>
+
+    <!-- Custom fonts for this template-->
+    <link
+            href="{% static 'vendor/fontawesome-free/css/all.min.css' %}"
+            rel="stylesheet"
+            type="text/css"
+    />
+
+    <link href="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.css" rel="stylesheet"/>
+
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet"/>
+</head>
+
+<body class="bg-gradient-info" dir="rtl">
+<div class="container">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">ساخت هدف جدید</h1>
+                        </div>
+
+                        <form class="user" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group row justify-content-start">
+                                <label for="name">هدفت چیه ؟</label>
+                                <input
+                                        type="text"
+                                        class="form-control form-control-user"
+                                        id="name"
+                                        name="name"
+                                        placeholder="نام کتاب درس و ..."
+                                />
+                            </div>
+                            <div class="form-group row justify-content-start">
+                                <label for="period" dir="rtl">بازه زمانی مورد نظرت چیه ؟</label>
+                                <input
+                                        required
+                                        class="form-control form-control-user"
+                                        type="text"
+                                        name="period"
+                                        placeholder="هفتگی ماهانه و ..."
+                                        list="topic-list"
+                                >
+                                <datalist id="topic-list">
+                                    <select id="room_topic">
+                                        {% for period in periods %}
+                                            <option value="{{ period.name }}">{{ period.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </datalist>
+                            </div>
+
+                            <div class="form-group row justify-content-start">
+                                <label for="mode" dir="rtl">نوع هدفت چیه ؟</label>
+                                <input
+                                        required
+                                        class="form-control form-control-user"
+                                        type="text"
+                                        name="mode"
+                                        placeholder="صفحه فصل ساعت و ..."
+                                        list="mode-list"
+                                >
+                                <datalist id="mode-list">
+                                    <select id="room_topic">
+                                        {% for mode in modes %}
+                                            <option value="{{ mode.name }}">{{ mode.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </datalist>
+                            </div>
+
+                            <div class="form-group row justify-content-start">
+                                <label for="goal">با توجه به بازه زمانی و نوع هدف یک عدد وارد کنید</label>
+                                <input
+                                        type="text"
+                                        class="form-control form-control-user"
+                                        id="goal"
+                                        name="goal"
+                                        placeholder="برای مثال : 57 صفحه در هفته"
+                                />
+                            </div>
+
+
+                            <button
+                                    type="submit"
+                                    class="btn btn-info btn-user btn-block"
+                            >
+                                 ساخت هدف جدید
+                            </button>
+
+                        </form>
+                        <hr/>
+                        <div class="text-center">
+                            <a class="small" href="{{ request.META.HTTP_REFERER }}"
+                            >برگشت</a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin-2.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.js"></script>
+
+
+<script>
+
+    document.getElementsByClassName('_jw-tpk-hour').innerHTML = 'whatever'
+
+    var timepicker = new TimePicker('time', {
+        theme: 'light'
+    });
+    timepicker.on('change', function (evt) {
+
+        var value = (evt.hour || '00') + ':' + (evt.minute || '00');
+        evt.element.value = value;
+
+        console.log(value)
+
+        document.getElementsByClassName('_jw-tpk-hour').innerHTML = 'whatever'
+
+
+    });
+</script>
+
+</body>
+</html>
