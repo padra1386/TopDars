@@ -8,4 +8,5 @@ urlpatterns = [
     path('login/', views.loginPage, name='login'),
     path('create-room/', views.createTopic, name="create-topic"),
     path('accounts/', include('allauth.urls')),
+
 ]
