@@ -2,13 +2,16 @@
 {% load static %}
 {% block content %}
     <div class="container-fluid">
+
         <div
                 class="d-sm-flex align-items-center justify-content-between mb-4"
         ><a
                 href="{% url 'create-goal' %}"
                 class="d-none d-sm-inline-block btn btn-sm btn-block btn-info p-3 shadow-sm"
         ><i class="fas fa-plus fa-sm text-white-50 "></i> اضافه کردن هدف </a>
+
         </div>
+        <h2 class="text-right" dir="rtl">اهداف ماه اخیر :</h2>
         <div class="">
             <div class="row">
                 {% for goal in goals %}
@@ -78,49 +81,49 @@
         </div>
     </div>
 
-        <script src={% static 'vendor/chart.js/Chart.min.js' %}></script>
-        <script>
-            // Set new default font family and font color to mimic Bootstrap's default styling
-            (Chart.defaults.global.defaultFontFamily = "Nunito"),
-                '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-            Chart.defaults.global.defaultFontColor = "#858796";
+    <script src={% static 'vendor/chart.js/Chart.min.js' %}></script>
+    <script>
+        // Set new default font family and font color to mimic Bootstrap's default styling
+        (Chart.defaults.global.defaultFontFamily = "Nunito"),
+            '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+        Chart.defaults.global.defaultFontColor = "#858796";
 
-            // Pie Chart Example
-            var ctx = document.getElementById("myBarChart");
-            var myPieChart = new Chart(ctx, {
-                type: "bar",
-                data: {
-                    labels: {{ labels|safe }},
-                    datasets: [
-                        {
-                            label: " درصد ",
-                            data: {{ data|safe }},
-                            backgroundColor: ["#4e73df", "#1cc88a", "#36b9cc", "#e8186f", "#FE6244", "#5D9C59", "#16FF00"],
-                            hoverBackgroundColor: ["#2e59d9", "#17a673", "#2c9faf"],
-                            hoverBorderColor: "rgba(234, 236, 244, 1)",
-                        },
-                    ],
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    tooltips: {
-                        backgroundColor: "rgb(255,255,255)",
-                        bodyFontColor: "#858796",
-                        titleFontColor: "#6e707e",
-                        titleFontSize: 14,
-                        borderColor: "#dddfeb",
-                        borderWidth: 1,
-                        xPadding: 15,
-                        yPadding: 15,
-                        displayColors: false,
-                        caretPadding: 10,
+        // Pie Chart Example
+        var ctx = document.getElementById("myBarChart");
+        var myPieChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: {{ labels|safe }},
+                datasets: [
+                    {
+                        label: " درصد ",
+                        data: {{ data|safe }},
+                        backgroundColor: ["#4e73df", "#1cc88a", "#36b9cc", "#e8186f", "#FE6244", "#5D9C59", "#16FF00"],
+                        hoverBackgroundColor: ["#2e59d9", "#17a673", "#2c9faf"],
+                        hoverBorderColor: "rgba(234, 236, 244, 1)",
                     },
-                    legend: {
-                        display: false,
-
-                    },
+                ],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    titleFontColor: "#6e707e",
+                    titleFontSize: 14,
+                    borderColor: "#dddfeb",
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
                 },
-            });
+                legend: {
+                    display: false,
 
-        </script>
+                },
+            },
+        });
+
+    </script>
 {% endblock content %}
