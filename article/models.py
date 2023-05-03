@@ -8,3 +8,6 @@ class Article(models.Model):
     desc = models.TextField(null=False, blank=False)
     img = models.TextField(null=False, blank=False)
     created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title

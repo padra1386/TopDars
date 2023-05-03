@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -24,6 +25,7 @@ class Goal(models.Model):
     period = models.ForeignKey(Period, on_delete=models.CASCADE, null=False)
     mode = models.ForeignKey(goal_mode, on_delete=models.CASCADE, null=False)
     created = models.DateTimeField(auto_now_add=True)
+    goal_done = models.PositiveIntegerField(default=0, null=True, blank=True)
     progress = models.PositiveIntegerField(default=0)
 
     def __str__(self):

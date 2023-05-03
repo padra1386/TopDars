@@ -7,20 +7,19 @@
                 class="d-sm-flex align-items-center justify-content-between mb-4"
         ><a
                 href="{% url 'create-goal' %}"
-                class="d-none d-sm-inline-block btn btn-sm btn-block btn-info p-3 shadow-sm"
+                class=" d-sm-inline-block btn btn-sm btn-block btn-info p-3 shadow-sm"
         ><i class="fas fa-plus fa-sm text-white-50 "></i> اضافه کردن هدف </a>
 
         </div>
-        <h2 class="text-right" dir="rtl">اهداف ماه اخیر :</h2>
         <div class="">
             <div class="row">
                 {% for goal in goals %}
                     <div class="col-xl-6 col-md-9 mb-4">
-                        <div class="card border-left-info shadow h-100 py-2">
-                            <a class="card-body text-decoration-none" href="{% url 'home' %}">
+                        <div class="card {% if goal.progress == 100 %} border-left-danger {% endif %} shadow h-100 py-2">
+                            <a class="card-body text-decoration-none" href="{% url 'add-goal' goal.id %}">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div class="font-weight-bold text-info text-uppercase mb-1"
+                                        <div class="font-weight-bold {% if goal.progress == 100 %} text-danger {% endif %}o text-uppercase mb-1"
                                              style="font-size: 13px">{{ goal.name }}
                                         </div>
                                         <div class="row no-gutters align-items-center">
@@ -29,7 +28,8 @@
                                             </div>
                                             <div class="col">
                                                 <div class="progress progress-sm mr-2">
-                                                    <div class="progress-bar bg-info" role="progressbar"
+                                                    <div class="progress-bar {% if goal.progress == 100 %} bg-danger {% endif %}"
+                                                         role="progressbar"
                                                          style="width: {{ goal.progress }}%"
                                                          aria-valuenow="{{ goal.progress }}" aria-valuemin="0"
                                                          aria-valuemax="100"></div>
@@ -37,7 +37,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-auto mt-3" dir="rtl">
+                                    <div class="col-auto mt-3 {% if goal.progress == 100 %} text-danger {% endif %}"
+                                         dir="rtl">
                                         {{ goal.goal }} {{ goal.mode }} در {{ goal.period }}
                                     </div>
                                 </div>
@@ -47,39 +48,42 @@
                 {% endfor %}
             </div>
 
-            <div class="row">
-                <div class="col-xl-12 col-lg-11">
-                    <div class="card shadow mb-4">
-                        <!-- Card Header - Dropdown -->
-                        <div
-                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">نمودار اهداف</h6>
-                            <div class="dropdown no-arrow">
-                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                     aria-labelledby="dropdownMenuLink">
-                                    <div class="dropdown-header">Dropdown Header:</div>
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
+            {% if goals %}
+                <div class="row">
+                    <div class="col-xl-12 col-lg-11">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">نمودار اهداف</h6>
+                                <div class="dropdown no-arrow">
+                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                         aria-labelledby="dropdownMenuLink">
+                                        <div class="dropdown-header">Dropdown Header:</div>
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Card Body -->
-                        <div class="card-body">
-                            <div class="chart-bar">
-                                <canvas id="myBarChart"></canvas>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="chart-bar">
+                                    <canvas id="myBarChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
+                </div>
+                </div>
+            {% endif %}
+
 
     <script src={% static 'vendor/chart.js/Chart.min.js' %}></script>
     <script>
@@ -89,8 +93,8 @@
         Chart.defaults.global.defaultFontColor = "#858796";
 
         // Pie Chart Example
-        var ctx = document.getElementById("myBarChart");
-        var myPieChart = new Chart(ctx, {
+        let ctx = document.getElementById("myBarChart");
+        let myPieChart = new Chart(ctx, {
             type: "bar",
             data: {
                 labels: {{ labels|safe }},

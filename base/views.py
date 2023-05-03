@@ -5,12 +5,11 @@ from django.shortcuts import render, redirect
 
 from .forms import MyUserCreationForm
 from .models import studySummary, Topic, chek
+from goals.models import Goal
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.utils import timezone
 from datetime import datetime, timedelta
-
-
 
 
 # Create your views here.
@@ -43,7 +42,6 @@ def homePage(request):
         # Handle the case where the user is not authenticated with Google
         profile_picture_url = None
 
-
     def _sum(arr):
 
         # initialize a variable
@@ -68,11 +66,13 @@ def homePage(request):
     ans = _sum(data)
     ans_all = _sum(data_all)
     page_all_week = _sum(page)
+    last_ten_goals = Goal.objects.filter().order_by('-id')[:2]
     try:
         data_average = (ans / len(data))
     except:
         data_average = 0
-    context = {'labels': labels, 'data': data, 'data_avg': data_average, 'ans': ans, 'msgnn': message_if_0, 'profile_picture_url': profile_picture_url, 'page': page_all_week}
+    context = {'labels': labels, 'data': data, 'data_avg': data_average, 'ans': ans, 'msgnn': message_if_0,
+               'profile_picture_url': profile_picture_url, 'page': page_all_week, 'goals': last_ten_goals}
     return render(request, 'base/index.html', context)
 
 
@@ -82,12 +82,26 @@ def registerPage(request):
     if request.method == 'POST':
         username = request.POST.get('username').lower()
         email = request.POST.get('email').lower()
-        password = request.POST.get('password')
-        user = User.objects.create_user(username, email, password)
-        user.backend = 'django.contrib.auth.backends.ModelBackend'
-        user.save()
-        login(request, user)
-        return redirect('home')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        try:
+            # Try to retrieve a user with the given email
+            user = User.objects.get(username=username)
+            # If a user exists with the given email, return an error message
+            messages.error(request, 'نام کاربری تکراری است')
+        except User.DoesNotExist:
+            if password1 == password2:
+                try:
+                    user = User.objects.get(email=email)
+                    messages.error(request, 'ایمیل تکراری است')
+                except User.DoesNotExist:
+                    user = User.objects.create_user(username, email, password1)
+                    user.backend = 'django.contrib.auth.backends.ModelBackend'
+                    user.save()
+                    login(request, user)
+                    return redirect('home')
+            else:
+                messages.error(request, 'رمز عبور ها با هم مطابقت ندارند')
 
     return render(request, 'base/register.html', {'form': form})
 
@@ -105,7 +119,6 @@ def loginPage(request):
         username = request.POST.get('username').lower()
         password = request.POST.get('password')
         user = User.objects.get(username=username)
-
 
         user = authenticate(request, username=username, password=password)
 
@@ -125,7 +138,7 @@ def createTopic(request):
 
         time_string = time[0]
 
-        #Split the time string into hour and minute components
+        # Split the time string into hour and minute components
         hour, minute = time_string.split(":")
 
         # Convert the minute component to an integer
@@ -150,7 +163,6 @@ def createTopic(request):
 
         print("Rounded hour: ", hourround)
 
-
         Topic.objects.create(
             host=request.user,
             name=request.POST.get('name'),
@@ -158,9 +170,6 @@ def createTopic(request):
             page=request.POST.get('page'),
         )
 
-
         return redirect('home')
 
     return render(request, 'base/topic_form.html')
-
-

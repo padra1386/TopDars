@@ -47,10 +47,11 @@
   box-sizing: border-box;
 }
 
-* {
-  font-family: Vazir;
-}
+@import url(fontiran.css); /* لینک فایلی که وظیفه بارگذاری فونت ها را برعهده دارد */
 
+body {
+  font-family: IRAN !important;
+}
 
 html {
   font-family: sans-serif;

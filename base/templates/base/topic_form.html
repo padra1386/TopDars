@@ -44,6 +44,7 @@
 
                         <form class="user" method="POST">
                             {% csrf_token %}
+{#                            {{ form.as_p }}#}
                             <div class="form-group row justify-content-start">
                                 <label for="name">چی خوندی ؟</label>
                                     <input
@@ -52,6 +53,7 @@
                                             id="name"
                                             name="name"
                                             placeholder="نام درس"
+                                            required
                                     />
                                 </div>
                             <div class="form-group row justify-content-start">
@@ -62,6 +64,7 @@
                                         id="page"
                                         name="page"
                                         placeholder="تعداد صفحه"
+                                        required
                                 />
                             </div>
 
@@ -73,6 +76,7 @@
                                         id="time"
                                         name="time"
                                         placeholder="مدت زمان مطالعه"
+                                        required
                                 />
                             </div>
 

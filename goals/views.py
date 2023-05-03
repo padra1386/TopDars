@@ -12,10 +12,11 @@ def goals(request):
     data2 = []
     type = []
     thirty_days_ago = timezone.now() - timezone.timedelta(days=30)
-    goals_all_q = Goal.objects.filter(host=request.user, created__gte=thirty_days_ago)
+    goals_all_q = Goal.objects.filter(host=request.user)
 
     for goal in goals_all_q:
         labels2.append(goal.name)
+        goal.progress = round((goal.goal_done / goal.goal) * 100)
         data2.append(goal.progress)
 
     context = {'goals': goals_all_q, 'labels': labels2, 'data': data2, 'type': type}
@@ -43,3 +44,9 @@ def createGoal(request):
         return redirect('goals')
     context = {'periods': periods, 'modes': modes}
     return render(request, 'goals/goal_form.html', context)
+
+@login_required(login_url='login')
+def goalprogress(request, pk):
+    goal = Goal.objects.get(id=pk)
+
+    return render(request, 'goals/goal_add.html', {'goal': goal})

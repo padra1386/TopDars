@@ -41,38 +41,15 @@
                         </div>
                         <form class="user" method="POST">
                             {% csrf_token %}
-                            <div class="form-group row">
-                                <div class="col-sm-12">
-                                    <input
-                                            type="text"
-                                            class="form-control form-control-user"
-                                            id="username"
-                                            name="username"
-                                            placeholder="نام کاربری"
-                                    />
+                            {{ form.as_p }}
+                            {% if messages %} {% for message in messages %}
+                                <div class="alert alert-dismissible alert-success">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        ×
+                                    </button>
+                                    <strong>{{ message }}</strong>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <input
-                                        type="email"
-                                        class="form-control form-control-user"
-                                        id="email"
-                                        name="email"
-                                        placeholder="آدرس ایمیل"
-                                />
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-12 mb-6 mb-sm-0">
-                                    <input
-                                            type="password"
-                                            class="form-control form-control-user"
-                                            id="password"
-                                            name="password"
-                                            placeholder="رمز عبور"
-                                    />
-                                </div>
-                            </div>
-
+                            {% endfor %} {% endif %}
                             <button
                                     type="submit"
                                     class="btn btn-primary btn-user btn-block"
@@ -80,7 +57,7 @@
                                 ساخت اکانت
                             </button>
                             <a
-                                    href="index.html"
+                                    href="http://127.0.0.1:8000/accounts/google/login/"
                                     class="btn btn-google btn-user btn-block"
                             >
                                 <i class="fab fa-google fa-fw"></i> ثبت نام با گوگل

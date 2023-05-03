@@ -41,18 +41,22 @@
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
 }
+
+
+
 *,
 ::after,
 ::before {
   box-sizing: border-box;
 }
 
-* {
-  font-family: Vazir;
+body {
+  font-family: 'Vazirmatn';
 }
 
+
+
 html {
-  font-family: sans-serif;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;

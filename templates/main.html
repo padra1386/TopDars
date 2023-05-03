@@ -11,7 +11,11 @@
     />
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Padra Ahani</title>
+    <title>تاپ درس :)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300&display=swap" rel="stylesheet">
 
     <!-- Custom fonts for this template-->
     <link
@@ -19,10 +23,8 @@
             rel="stylesheet"
             type="text/css"
     />
-    <link
-            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet"
-    />
+    <link rel="stylesheet" href="{% static 'css/stylefont.css' %}">
+
 
     <!-- Custom styles for this template-->
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet"/>
@@ -78,20 +80,20 @@
         </li>
 
         <!-- Nav Item - Tables -->
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'articles' %}">
-                <i class="fas fa-fw fa-table"></i>
-                <span>مقالات</span></a
-            >
-        </li>
-
-
-
 
         <li class="nav-item">
             <a class="nav-link" href="{% url 'goals' %}">
                 <i class="fas fa-fw fa-atom"></i>
                 <span>هدف گذاری</span></a
+            >
+        </li>
+
+        <hr class="sidebar-divider d-none d-md-block"/>
+
+        <li class="nav-item mb-2">
+            <a class="nav-link" href="{% url 'articles' %}">
+                <i class="fas fa-fw fa-table"></i>
+                <span>مقالات</span></a
             >
         </li>
 
@@ -116,7 +118,7 @@
             </p>
             <a
                     class="btn btn-success btn-sm"
-                    href="https://startbootstrap.com/theme/sb-admin-pro"
+                    href="https://nextpay.org/nx/store/topdars"
             >ارتقا به حرفه ای</a
             >
         </div>
@@ -155,7 +157,7 @@
                                     aria-describedby="basic-addon2"
                             />
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
+                                <button class="btn btn-primary" type="submit">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
                             </div>
@@ -367,7 +369,6 @@
         Chart.defaults.global.defaultFontColor = "#858796";
 
 
-
         // Area Chart Example
         var ctx = document.getElementById("myAreaChart");
         var myLineChart = new Chart(ctx, {
@@ -491,7 +492,6 @@
                 cutoutPercentage: 80,
             },
         });
-
 
 
     </script>
