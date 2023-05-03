@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-wbuo9#owg#9qfmp9saqxk(9vsk!k*ka5**5%)4npl%iwojac9$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'gunicorn',
 ]
 
 
