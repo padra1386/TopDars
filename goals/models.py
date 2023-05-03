@@ -21,6 +21,7 @@ class goal_mode(models.Model):
 class Goal(models.Model):
     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, null=False, blank=False)
+    desc = models.TextField(default='', null=True, blank=True)
     goal = models.PositiveIntegerField(default=0, null=False, blank=False)
     period = models.ForeignKey(Period, on_delete=models.CASCADE, null=False)
     mode = models.ForeignKey(goal_mode, on_delete=models.CASCADE, null=False)

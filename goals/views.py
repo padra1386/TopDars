@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from . import models
@@ -37,6 +38,7 @@ def createGoal(request):
         Goal.objects.create(
             host=request.user,
             name=request.POST.get('name'),
+            desc=request.POST.get('desc'),
             goal=request.POST.get('goal'),
             period=period,
             mode=mode,
@@ -48,5 +50,30 @@ def createGoal(request):
 @login_required(login_url='login')
 def goalprogress(request, pk):
     goal = Goal.objects.get(id=pk)
+    goal.progress = round((goal.goal_done / goal.goal) * 100)
+    if request.user != goal.host:
+        return HttpResponse('شما اجازه ورود به این صفحه را ندارید')
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        desc = request.POST.get('desc')
+        goal_done = request.POST.get('goal-done')
+        goal.name = name
+        goal.desc = desc
+        goal.goal_done = goal_done
+        goal.save()
+        return redirect('goals')
 
     return render(request, 'goals/goal_add.html', {'goal': goal})
+
+
+def deleteGoal(request, pk):
+    goal = Goal.objects.get(id=pk)
+
+    if request.user != goal.host:
+        return HttpResponse('شما اجازه ورود به این صفحه را ندارید')
+
+    goal.delete()
+    return redirect('goals')
+
+    return render(request, 'goals/delete.html', {'obj': goal})

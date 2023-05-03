@@ -1,4 +1,98 @@
 {% extends 'main.html' %}
 {% block content %}
-    {{ goal.name }}
+    <div class="container-fluid">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <!-- Area Chart -->
+                <div class="col-xl-12 col-lg-11">
+                    <div class="card shadow mb-4 text-right" dir="rtl">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-body">
+                            <div class="text-center">
+                                <h5 class="card-title text-right mb-4 text-gray-900 font-weight-bold">
+                                    نام هدف :
+
+                                    <input name="name" id="name" type="text" class="form-control-user form-control mt-3"
+                                           value="{{ goal.name }}"/>
+                                </h5>
+                            </div>
+                            <div class="desc mb-3">
+                                <h5 class="text-gray-900 font-weight-normal">توضیحات هدف : </h5>
+                                <textarea name="desc" id="desc" cols="30" class="form-control-user form-control"
+                                          rows="10">{{ goal.desc }}</textarea>
+                            </div>
+
+                            <div class="progress-st">
+                                <h5 class="text-gray-900 mb-3">وضعیت : </h5>
+                                <div class="row no-gutters align-items-center mb-3">
+                                    <div class="col-auto">
+                                        <div class="h5 mb-0 mr-0 font-weight-bold text-gray-800">{{ goal.progress }}%</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="progress progress-sm mr-2" dir="ltr">
+                                            <div class="progress-bar {% if goal.progress == 100 %} bg-danger {% endif %}"
+                                                 role="progressbar"
+                                                 style="width: {{ goal.progress }}%"
+                                                 aria-valuenow="{{ goal.progress }}" aria-valuemin="0"
+                                                 aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="">
+
+                                    <div class="d-flex text-gray-900 font-weight-bold align-items-center">
+                                        <input type="text" value="{{ goal.goal_done }}" name="goal-done"
+                                               id="goal-done"
+                                               class="form-control form-control-user ml-2" style="width: 50px"/>
+                                        {{ goal.mode }} انجام شده از {{ goal.goal }} {{ goal.mode }}
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col">
+                                            <button
+                                                    type="submit"
+                                                    class="btn btn-primary btn-user btn-block"
+                                            >
+                                                ثبت تغییرات
+                                            </button>
+                                        </div>
+                                        <div class="col">
+                                            <a href="{% url 'delete-goal' goal.id %}" class="btn btn-danger btn-user btn-block">
+                                                حذف هدف
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- Card Body -->
+
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+
+    </div>
+
+
+    <style>
+        .centered-div {
+            margin: 0 auto;
+            width: 20%; /* Optional - adjust as needed */
+        }
+    </style>
+
+
+    <!-- End of Main Content -->
+
+    </div>
+
+
+
 {% endblock content %}
