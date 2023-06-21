@@ -1,0 +1,44 @@
+{% extends 'main.html' %}
+{% block content %}
+    <div class="container">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">پروفایل خود را ویرایش کنید</h1>
+                            </div>
+                            <form class="user text-right" dir="rtl" method="POST">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                {% if messages %} {% for message in messages %}
+                                    <div class="alert alert-dismissible alert-success">
+                                        <button type="button" class="close" data-dismiss="alert">
+                                            ×
+                                        </button>
+                                        <strong>{{ message }}</strong>
+                                    </div>
+                                {% endfor %} {% endif %}
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary btn-user btn-block"
+                            >
+                                بروزرسانی
+                            </button>
+                            <a
+                                    href="{% url 'home' %}"
+                                    class="btn btn-google btn-user btn-block"
+                            >
+                                <i class="fa fa-door-closed mx-2 fa-fw"></i>لغو
+                            </a>
+                            </form>
+                            <hr/>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,6 +46,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'gunicorn',
+    'tutorials',
+    'django.contrib.humanize',
 ]
 
 
@@ -52,6 +55,9 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend'
 ]
+
+DEFAULT_CHARSET = 'utf-8'
+
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -137,9 +143,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/Tehran'
+TIME_ZONE = 'Iran'
 
 USE_I18N = True
+
+USE_L10N = True
 
 USE_TZ = True
 

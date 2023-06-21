@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.forms import ModelForm, TextInput, EmailInput
 from django import forms
 
 
@@ -22,15 +23,38 @@ class MyUserCreationForm(UserCreationForm):
     password1 = forms.CharField(
         help_text='',
         label='',
-        widget=forms.PasswordInput(attrs={'class': 'form-control form-control-user', 'type': 'password', 'placeholder': 'رمز عبور'})
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control form-control-user', 'type': 'password', 'placeholder': 'رمز عبور'})
     )
 
     password2 = forms.CharField(
         help_text='',
         label='',
-        widget=forms.PasswordInput(attrs={'class': 'form-control form-control-user', 'type': 'password', 'placeholder': 'تکرار رمز عبور'})
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control form-control-user', 'type': 'password', 'placeholder': 'تکرار رمز عبور'})
     )
 
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
+
+
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email']
+        widgets = {
+            'username': TextInput(attrs={'class': 'form-control form-control-user'}),
+            'first_name': TextInput(attrs={'class': 'form-control form-control-user'}),
+            'last_name': TextInput(attrs={'class': 'form-control form-control-user'}),
+            'email': EmailInput(attrs={'class': 'form-control form-control-user'}),
+        }
+        labels = {
+            'username': 'نام کاربری',
+            'first_name': 'نام',
+            'last_name': 'نام خانوادگی',
+            'email': 'ایمیل',
+        }
+        help_texts = {
+            'username': '',
+        }

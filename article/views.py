@@ -2,15 +2,19 @@ from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .models import Article
 from django.db.models import Q
-
+import logging
 # Create your views here.
 
 
 def Articlespage(request):
+    logger = logging.getLogger(__name__)
 
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    q = request.GET.get('q') if request.GET.get('q') is not None else ''
 
-    print(q)
+
+    logger.info(q)  # Use logger instead of print
+
+
 
     items = Article.objects.filter(
         Q(title__icontains=q)
@@ -26,7 +30,7 @@ def Articlespage(request):
         items = paginator.page(paginator.num_pages)
 
     context = {
-        'items': items,
+        'items': items
     }
 
     return render(request, 'article/index.html', context)
@@ -34,7 +38,6 @@ def Articlespage(request):
 
 def article(request, pk):
     article = Article.objects.get(id=pk)
-
 
     context = {'article': article}
     return render(request, 'article/article.html', context)

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "fluid-player": "^3.0.0",
+    "rx-player": "^3.31.0"
+  }
+}

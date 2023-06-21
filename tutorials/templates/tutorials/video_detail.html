@@ -1,0 +1,116 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+    {#    <div>#}
+    {#        <div>#}
+    {##}
+    {#        </div>#}
+    {##}
+    {#        <div class="text-right">#}
+    {#            <h1 class="text-gray-900 font-weight-bolder">{{ video.title }}</h1>#}
+    {#        </div>#}
+    {#    </div>#}
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Area Chart -->
+            <div class="col-xl-12 col-lg-11">
+                <div class="card shadow mb-4 text-right" dir="rtl">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-body">
+                        <div class="text-center">
+                            <video id="video-player" class="embed-responsive">
+                                <source src="{{ video.video_url }}" type="video/mp4"/>
+                            </video>
+                            <h1 class="card-title text-right mb-3 text-gray-900 mt-3 font-weight-bolder">{{ video.title }}</h1>
+
+                        </div>
+                        <div class="">
+                            <h6 class="font-weight-light text-gray-800">{{ video.desc|safe|linebreaks }}</h6>
+                        </div>
+
+                        <div>
+                            <ol class="list-group list-group-numbered p-0">
+
+                            </ol>
+                        </div>
+
+                    </div>
+                    <!-- Card Body -->
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- HTML markup for the video player -->
+    <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
+    <script>
+        // fluidPlayer method is global when CDN distribution is used.
+        var player = fluidPlayer('video-player');
+    </script>
+
+    <!-- JavaScript code to track progress and send updates to the server -->
+    <script>
+        var videoPlayer = document.getElementById('video-player');
+        var videoId = '{{ video.id }}';  // Replace with the actual video ID
+
+        videoPlayer.addEventListener('pause', function () {
+            var currentTime = videoPlayer.currentTime;
+            var formattedProgress = formatProgress(currentTime);
+
+            // Send progress update to the server using AJAX
+            var url = '/tutorials/update_video_progress/' + videoId + '?progress=' + formattedProgress;
+
+            fetch(url)
+                .then(function (response) {
+                    if (response.ok) {
+                        console.log('Progress updated successfully');
+                    } else {
+                        console.error('Error updating progress');
+                    }
+                })
+                .catch(function (error) {
+                    console.error('Error updating progress:', error);
+                });
+        });
+
+        {#window.addEventListener('beforeunload', function () {#}
+        {#    var currentTime = videoPlayer.currentTime;#}
+        {#    var formattedProgress = formatProgress(currentTime);#}
+        {##}
+        {#    // Send progress update to the server using AJAX#}
+        {#    var url = '/tutorials/update_video_progress/' + videoId + '?progress=' + formattedProgress;#}
+        {##}
+        {#    fetch(url)#}
+        {#        .then(function (response) {#}
+        {#            if (response.ok) {#}
+        {#                console.log('Progress updated successfully');#}
+        {#            } else {#}
+        {#                console.error('Error updating progress');#}
+        {#            }#}
+        {#        })#}
+        {#        .catch(function (error) {#}
+        {#            console.error('Error updating progress:', error);#}
+        {#        });#}
+        {#});#}
+
+        function formatProgress(currentTime) {
+            // Calculate progress in minutes and seconds
+            var progressMinutes = Math.floor(currentTime / 60);
+            var progressSeconds = Math.floor(currentTime % 60);
+
+            // Format progress with leading zeros
+            var formattedProgress = progressMinutes.toString().padStart(2, '0') + ':' + progressSeconds.toString().padStart(2, '0');
+
+            return formattedProgress;
+        }
+
+    </script>
+
+
+{% endblock content %}

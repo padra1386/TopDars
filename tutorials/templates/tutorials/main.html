@@ -1,0 +1,118 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+    <div class="">
+        <div class=" mb-3">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <form method="GET" action="{% url 'main' %}">
+                            <div class="form-group">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="m-1">
+                                        <label for="price">: قیمت</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="price" id="price-all"
+                                                   value="all"
+                                                   {% if not request.GET.price or request.GET.price == 'all' %}checked{% endif %}>
+                                            <label class="form-check-label" for="price-all">
+                                                همه دوره‌ها
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="price" id="price-free"
+                                                   value="free" {% if request.GET.price == 'free' %}checked{% endif %}>
+                                            <label class="form-check-label" for="price-free">
+                                                دوره‌های رایگان
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="price" id="price-paid"
+                                                   value="paid" {% if request.GET.price == 'paid' %}checked{% endif %}>
+                                            <label class="form-check-label" for="price-paid">
+                                                دوره‌های پرداختی
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="time">زمان آپلود:</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="time" id="time-all"
+                                                   value="all"
+                                                   {% if not request.GET.time or request.GET.time == 'all' %}checked{% endif %}>
+                                            <label class="form-check-label" for="time-all">
+                                                همه زمان‌ها
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="time" id="time-recent"
+                                                   value="recent"
+                                                   {% if request.GET.time == 'recent' %}checked{% endif %}>
+                                            <label class="form-check-label" for="time-recent">
+                                                جدیدترین آپلودها
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="time" id="time-oldest"
+                                                   value="oldest"
+                                                   {% if request.GET.time == 'oldest' %}checked{% endif %}>
+                                            <label class="form-check-label" for="time-oldest">
+                                                قدیمی‌ترین آپلودها
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-3 mt-2 w-100">فیلتر</button>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex flex-column justify-content-center align-items-end mt-5">
+                            <h1 class="font-weight-bolder text-gray-900">دوره های آموزشی</h1>
+                            <h4 class="font-weight-lighter text-gray-600">دوره ببین، تمرین کن، برنامه نویس شو</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div dir="rtl" class="row card-container">
+                {% for course in coureses %}
+                    <div class="col-md-4">
+                        <div class="card  shadow mb-4 text-right" dir="rtl">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card p-0 text-right col">
+                                <img class="card-img-top" style="object-fit: cover; height: 200px"
+                                     src="{{ course.img }}"
+                                     alt="Card image cap">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title text-gray-900 font-weight-bold">{{ course.title }}</h5>
+                                    <p class="card-text">{{ course.desc|truncatechars:250 }}</p>
+                                    <a href="{% url 'tutorial_detail' course.id %}" class="btn btn-primary">دیدن
+                                        دوره</a>
+                                    <div class="w-100 text-center mt-3">
+                                        {% if course.price != 0 %}
+                                            <h6 class="font-weight-bolder text-gray-900">{{ course.price|intcomma }}
+                                                تومان</h6>
+
+                                        {% else %}
+                                            <h6 class="font-weight-bolder text-success">رایگان</h6>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Card Body -->
+
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock content %}

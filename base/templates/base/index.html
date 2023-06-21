@@ -17,7 +17,7 @@
         <!-- Content Row -->
         <div class="row">
             <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-4 col-md-7 mb-4">
+            <div class="col-xl-6 col-md-12 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -25,22 +25,20 @@
                                 <div
                                         class="text-xs font-weight-bold text-primary text-uppercase mb-1"
                                 >
-                                    میانگین ساعات مطالعه (ماهانه)
+                                    میانگین ساعات مطالعه امروز
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800" dir="rtl">
-                                    {{ data_avg|floatformat:1 }} ساعت
+                                    {{ data_avg_day }}
                                 </div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-4 col-md-7 mb-4">
+            <div class="col-xl-6 col-md-12 mb-4">
                 <div class="card border-left-success shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -48,46 +46,56 @@
                                 <div
                                         class="text-xs font-weight-bold text-success text-uppercase mb-1"
                                 >
-                                    جمع کل ساعات مطالعه (ماهانه)
+                                    جمع کل ساعات مطالعه امروز
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800" dir="rtl">
-                                    {{ ans|floatformat:1 }} ساعت
+                                    {{ data_day }}
                                 </div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-4 col-md-7 mb-4">
-                <div class="card border-left-info shadow h-100 py-2">
+
+
+            <div class="col-xl-6 col-md-12 mb-4">
+                <div class="card border-left-danger shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div
-                                        class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                    جمع کل صفحات خوانده شده (ماهانه)
+                                        class="text-xs font-weight-bold text-danger text-uppercase mb-1"
+                                >
+                                    میانگین ساعات مطالعه ماهانه
                                 </div>
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col-auto">
-                                        <div
-                                                class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
-                                        >
-                                            {{ page }}
-                                        </div>
-                                    </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" dir="rtl">
+                                    {{ data_avg }}
+                                </div>
+                            </div>
 
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-12 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div
+                                        class="text-xs font-weight-bold text-warning text-uppercase mb-1"
+                                >
+                                    جمع کل ساعات مطالعه ماهانه
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" dir="rtl">
+                                    {{ data }}
                                 </div>
                             </div>
-                            <div class="col-auto">
-                                <i
-                                        class="fas fa-clipboard-list fa-2x text-gray-300"
-                                ></i>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -101,7 +109,7 @@
 
         <div class="row">
             <!-- Area Chart -->
-            <div class="col-xl-12 col-lg-11">
+            <div class="col-xl-12 col-lg-12">
                 <div class="card shadow mb-4">
                     <!-- Card Header - Dropdown -->
                     <div
@@ -111,7 +119,7 @@
                             بررسی کلی ساعات مطالعه (ماهانه)
                         </h6>
                         <div class="m-0 p-0">
-                            <a href="{% url 'create-topic' %}"><h6>{{ msgnn }}</h6></a>
+                            <a href="{% url 'main' %}"><h6>{{ msgnn }}</h6></a>
                         </div>
                     </div>
                     <!-- Card Body -->
@@ -127,57 +135,94 @@
 
 
             <!-- Content Row -->
-            <div class="row">
-                <!-- Content Column -->
-                <div class="col-lg-12 mb-10">
-                    <!-- Project Card Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <a href="{% url 'goals' %}"><h6 class="m-0 font-weight-bold text-primary" dir="rtl">5 هدف اخیر شما</h6></a>
-                        </div>
-                        <div class="card-body">
-                            {% for goa in goals %}
-                                <h4 class="small font-weight-bold">
-                                    {{ goa.name }}<span class="float-right">{{ goa.progress }}%</span>
-                                </h4>
-                                <div class="progress mb-4">
-                                    <div
-                                            class="progress-bar bg-warning"
-                                            role="progressbar"
-                                            style="width: {{ goa.progress }}%"
-                                            aria-valuenow="{{ goa.progress }}"
-                                            aria-valuemin="0"
-                                            aria-valuemax="100"
-                                    ></div>
-                                </div>
-                            {% endfor %}
 
 
-                            </div>
+            <!-- Approach -->
+
+        </div>
+
+        <div class="row">
+            <!-- Area Chart -->
+            <div class="col-xl-6 col-lg-12">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div
+                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                    >
+                        <h6 class="m-0 font-weight-bold text-success">
+                            بررسی کلی ساعات مطالعه (ماهانه)
+                        </h6>
+                        <div class="m-0 p-0">
+                            <a href="{% url 'main' %}"><h6>{{ msgnn }}</h6></a>
                         </div>
                     </div>
-
-
-                    <!-- Approach -->
-                    <div class="card shadow mb-4">
-
-                        <div class="card-body">
-                            <p>
-                                SB Admin 2 makes extensive use of Bootstrap 4 utility
-                                classes in order to reduce CSS bloat and poor page
-                                performance. Custom CSS classes are used to create custom
-                                components and custom utility classes.
-                            </p>
-                            <p class="mb-0">
-                                Before working with this theme, you should become familiar
-                                with the Bootstrap framework, especially the utility
-                                classes.
-                            </p>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div class="chart-area">
+                            <canvas id="myPieChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6  col-lg-12">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div
+                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                    >
+                        <h6 class="m-0 font-weight-bold text-danger">
+                            بررسی کلی ساعات مطالعه (ماهانه)
+                        </h6>
+                        <div class="m-0 p-0">
+                            <a href="{% url 'main' %}"><h6>{{ msgnn }}</h6></a>
+                        </div>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div class="chart-area">
+                            <canvas id="myPolarChart"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- /.container-fluid -->
+    </div>
+    </div>
+
+
+
+
+
+    {#    <div class="row">#}
+    {#        <!-- Area Chart -->#}
+    {#        <div class="col-xl-6 mx-4 col-lg-11">#}
+    {#            <div class="card shadow mb-4">#}
+    {#                <!-- Card Header - Dropdown -->#}
+    {#                <div#}
+    {#                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between"#}
+    {#                >#}
+    {#                    <h6 class="m-0 font-weight-bold text-primary">#}
+    {#                        بررسی کلی ساعات مطالعه (ماهانه)#}
+    {#                    </h6>#}
+    {#                    <div class="m-0 p-0">#}
+    {#                        <a href="{% url 'create-topic' %}"><h6>{{ msgnn }}</h6></a>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <!-- Card Body -->#}
+    {#                <div class="card-body">#}
+    {#                    <div class="chart-area">#}
+    {#                        <canvas id="myPolarChart"></canvas>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+    {#    </div>#}
+
+
+
+
+    </div>
+    <!-- /.container-fluid -->
     </div>
 {% endblock content %}

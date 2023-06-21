@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta meta
           name="viewport"
@@ -16,6 +16,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300&display=swap" rel="stylesheet">
+    <link href="https://vjs.zencdn.net/8.3.0/video-js.css" rel="stylesheet"/>
+    <link href="//vjs.zencdn.net/8.3.0/video-js.min.css" rel="stylesheet">
+
 
     <!-- Custom fonts for this template-->
     <link
@@ -31,12 +34,12 @@
 </head>
 
 
-<body id="page-top">
+<body id="page-top toggled">
 <!-- Page Wrapper -->
 <div id="wrapper">
     <!-- Sidebar -->
     <ul
-            class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+            class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled"
             id="accordionSidebar"
     >
 
@@ -56,10 +59,10 @@
         <hr class="sidebar-divider my-0"/>
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-            <a class="nav-link" href="{% url 'home' %}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span class="dashcss">داشبورد</span></a
+        <li class="nav-item ">
+            <a class="nav-link" href="{% url 'main' %}">
+                <i class="fas fa-fw fa-home"></i>
+                <span class="dashcss">صفحه اصلی</span></a
             >
         </li>
 
@@ -72,12 +75,14 @@
 
 
         <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'create-topic' %}">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>ثبت مطالعه جدید</span></a
+
+        <li class="nav-item ">
+            <a class="nav-link" href="{% url 'home' %}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span class="dashcss">داشبورد</span></a
             >
         </li>
+
 
         <!-- Nav Item - Tables -->
 
@@ -138,6 +143,7 @@
                         id="sidebarToggleTop"
                         class="btn btn-link d-md-none rounded-circle mr-3"
                 >
+
                     <i class="fa fa-bars"></i>
                 </button>
 
@@ -165,52 +171,118 @@
                     </form>
                 {% endif %}
 
+                {% if request.path == '/tutorials/' %}
+                    <form
+                            class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+                            action="{% url 'main' %}"
+                            method="GET"
+                    >
+                        <div class="input-group">
+                            <input
+                                    type="text"
+                                    name="q"
+                                    class="form-control bg-light border-0 small"
+                                    placeholder="جست و جو کنید"
+                                    aria-label="Search"
+                                    aria-describedby="basic-addon2"
+                            />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                {% endif %}
+
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                    <li class="nav-item dropdown no-arrow d-sm-none">
-                        <a
-                                class="nav-link dropdown-toggle"
-                                href="#"
-                                id="searchDropdown"
-                                role="button"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                        >
-                            <i class="fas fa-search fa-fw"></i>
-                        </a>
-                        <!-- Dropdown - Messages -->
-                        <div
-                                class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown"
-                        >
-                            <form class="form-inline mr-auto w-100 navbar-search">
-                                <div class="input-group">
-                                    <input
-                                            name="q"
-                                            type="text"
-                                            class="form-control bg-light border-0 small"
-                                            placeholder="جست جو کنید ..."
-                                            aria-label="Search"
-                                            aria-describedby="basic-addon2"
-                                    />
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button">
-                                            <i class="fas fa-search fa-sm"></i>
-                                        </button>
+                    {% if request.path == '/articles/' %}
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a
+                                    class="nav-link dropdown-toggle"
+                                    href="#"
+                                    id="searchDropdown"
+                                    role="button"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                            >
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div
+                                    class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                    aria-labelledby="searchDropdown"
+                            >
+                                <form class="form-inline mr-auto w-100 navbar-search"
+                                      action="{% url 'articles' %}"
+                                      method="GET">
+                                    <div class="input-group">
+                                        <input
+                                                name="q"
+                                                type="text"
+                                                class="form-control bg-light border-0 small"
+                                                placeholder="جست جو کنید ..."
+                                                aria-label="Search"
+                                                aria-describedby="basic-addon2"
+                                        />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="submit">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
-                        </div>
-                    </li>
+                                </form>
+                            </div>
+                        </li>
+                    {% endif %}
 
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'articles' %}">
-                            <span>مقالات</span></a>
-                    </li>
+                    {% if request.path == '/tutorials/' %}
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a
+                                    class="nav-link dropdown-toggle"
+                                    href="#"
+                                    id="searchDropdown"
+                                    role="button"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                            >
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div
+                                    class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                    aria-labelledby="searchDropdown"
+                            >
+                                <form class="form-inline mr-auto w-100 navbar-search"
+                                      action="{% url 'main' %}"
+                                      method="GET">
+                                    <div class="input-group">
+                                        <input
+                                                name="q"
+                                                type="text"
+                                                class="form-control bg-light border-0 small"
+                                                placeholder="جست جو کنید ..."
+                                                aria-label="Search"
+                                                aria-describedby="basic-addon2"
+                                        />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="submit">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                    {% endif %}
 
-                    <!-- Nav Item - Alerts -->
+
+
+                    <!-- Nav Item -      Alerts -->
                     <li class="nav-item dropdown no-arrow mx-1" dir="rtl">
                         <a
                                 class="nav-link"
@@ -221,7 +293,7 @@
                                 aria-haspopup="true"
                                 aria-expanded="false"
                         >
-                            سلام {{ request.user.username }} خوش اومدی !
+                            {{ request.user.first_name }} {{ request.user.last_name }}
                         </a>
                     </li>
 
@@ -257,11 +329,8 @@
                                 aria-labelledby="userDropdown"
                         >
                             {% if request.user.is_authenticated %}
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    پروفایل
-                                </a>
-                                <a class="dropdown-item" href="#">
+
+                                <a class="dropdown-item" href="{% url 'update-user' %}">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     تنظیمات
                                 </a>
@@ -350,7 +419,12 @@
 
     <!-- Bootstrap core JavaScript-->
     <script src="{% static  'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="//vjs.zencdn.net/8.3.0/video.min.js"></script>
+
     <script src="{% static  'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
     <!-- Core plugin JavaScript-->
     <script src="{% static  'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
@@ -360,6 +434,9 @@
 
     <!-- Page level plugins -->
     <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+    <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
+
 
     <!-- Page level custom scripts -->
     <script>
@@ -377,7 +454,7 @@
                 labels: {{labels|safe}},
                 datasets: [
                     {
-                        label: "ساعات مطالعه",
+                        label: "ثانیه",
                         lineTension: 0.3,
                         backgroundColor: "rgba(78, 115, 223, 0.05)",
                         borderColor: "rgba(78, 115, 223, 1)",
@@ -389,7 +466,7 @@
                         pointHoverBorderColor: "rgba(78, 115, 223, 1)",
                         pointHitRadius: 10,
                         pointBorderWidth: 2,
-                        data: {{ data|safe }},
+                        data: {{ datachart|safe }},
                     },
                 ],
             },
@@ -469,10 +546,80 @@
             data: {
                 labels: {{ labels|safe }},
                 datasets: [{
-                    data: {{ data|safe }},
-                    hoverBorderColor: "rgb(52,55,75)",
+                    label: "ثانیه",
+                    data: {{ datachart|safe }},
+                    hoverBorderColor: "rgba(84,86,101,0.71)",
+                    backgroundColor: [
+                        'rgb(255,99,132)',
+                        'rgb(255,159,64)',
+                        'rgb(255,205,86)',
+                        'rgb(75,192,192)',
+                        'rgb(54,162,235)',
+                        'rgb(153,102,255)',
+                        'rgb(201,203,207)'
+                    ],
                 },
                 ],
+
+
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: "#dddfeb",
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false,
+                },
+                cutoutPercentage: 80,
+            },
+        });
+
+
+        var ctx2 = document.getElementById("myPolarChart");
+        var myPieChart = new Chart(ctx2, {
+            type: "polarArea",
+            data: {
+                labels: {{ labels|safe }},
+                datasets: [{
+                    label: "ثانیه",
+                    data: {{ datachart|safe }},
+                    hoverBorderColor: "rgba(84,86,101,0.71)",
+                    backgroundColor: [
+                        'rgb(255,99,132)',
+                        'rgb(255,159,64)',
+                        'rgb(255,205,86)',
+                        'rgb(75,192,192)',
+                        'rgb(54,162,235)',
+                        'rgb(153,102,255)',
+                        'rgb(201,203,207)',
+                        'rgb(255,99,132)',
+                        'rgb(255,159,64)',
+                        'rgb(255,205,86)',
+                        'rgb(75,192,192)',
+                        'rgb(54,162,235)',
+                        'rgb(153,102,255)',
+                        'rgb(201,203,207)',
+                        'rgb(255,99,132)',
+                        'rgb(255,159,64)',
+                        'rgb(255,205,86)',
+                        'rgb(75,192,192)',
+                        'rgb(54,162,235)',
+                        'rgb(54,162,235)',
+                        'rgb(153,102,255)',
+                        'rgb(201,203,207)'
+                    ],
+                },
+                ],
+
+
             },
             options: {
                 maintainAspectRatio: false,
