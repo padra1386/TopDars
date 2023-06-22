@@ -8,7 +8,13 @@ from django.http import JsonResponse
 import re
 from datetime import timedelta
 from django.utils import timezone
-
+import xlwt
+from django.http import HttpResponse
+import jdatetime
+from jdatetime import date as jdate
+import datetime
+from datetime import date
+from dateutil.rrule import rrule, DAILY
 
 def HomePage(request):
     q = request.GET.get('q') if request.GET.get('q') is not None else ''
@@ -110,3 +116,49 @@ def update_video_progress(request, video_id):
     # video_progress.save()
 
     return JsonResponse({'status': 'success'})
+
+
+def export_users_xls(request):
+    progress_data = VideoWatchProgress.objects.filter(user=request.user)
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="karname.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('کارنامه')  # this will make a sheet named Users Data
+
+    # Sheet header, first row
+    row_num = 0
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['نام کاربری', 'دوره', 'ویدیو', 'پیشرفت', 'تاریخ ایجاد']
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)  # at 0 row 0 column
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+
+    rows = VideoWatchProgress.objects.filter(user=request.user).values_list('user__username', 'video__tutorial__title',
+                                                                            'video__title', 'progress', 'created')
+
+    converted_rows = []
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            if isinstance(row[col_num], datetime.datetime):
+                gregorian_date = row[col_num].date()  # Extract the date from the datetime object
+                solar_date = jdate.fromgregorian(date=gregorian_date).strftime('%Y-%m-%d %H:%M:%S')
+                ws.write(row_num, col_num, solar_date, font_style)
+            else:
+                ws.write(row_num, col_num, row[col_num], font_style)
+
+    for row in converted_rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
+
+    wb.save(response)
+
+    return response

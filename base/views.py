@@ -19,8 +19,8 @@ from .forms import UserForm
 def homePage(request):
     labels = []
     data = []
-    label_all = []
-    data_all = []
+    data_day = []
+    labels_day = []
     page = []
     # Get the current date and time
     current_date = timezone.now()
@@ -35,6 +35,7 @@ def homePage(request):
 
     thirty_days_ago = timezone.now() - timezone.timedelta(days=30)
     progress_data = models.VideoWatchProgress.objects.filter(user=request.user, created__gte=start_date)
+
     progress_data_day = models.VideoWatchProgress.objects.filter(user=request.user,
                                                                  created__range=(start_of_day, end_of_day))
 
@@ -43,17 +44,65 @@ def homePage(request):
     post_all_q = Topic.objects.filter(host=request.user)
 
     for city in progress_data:
+        modified_num = ''
         split_data = city.progress.split(':')
-        minute_to_seconds = (split_data[1] * 60)
+
+        for i in split_data[1]:
+            if i[0] == '0':
+                modified_num = 0
+            else:
+                modified_num = i[0]
+
+        result = split_data[1].lstrip('0')
+
+        minute_to_seconds = 0  # Default value
+
+        if result:
+            number_int = int(result)
+            minute_to_seconds = number_int * 60
+
+        print(minute_to_seconds)
+
         seconds = split_data[2]
-        sum2 = int(minute_to_seconds) + int(seconds)
+        result = split_data[1].lstrip('0')
+        sum2 = minute_to_seconds + int(seconds)
         labels.append(city.video.title)
         data.append(sum2)
-
 
     # for city in progress_data:
     #     label_all.append(city.video.title)
     #     data_all.append(city.progress)
+
+    for city in progress_data_day:
+        modified_num = ''
+        split_data = city.progress.split(':')
+
+        for i in split_data[1]:
+            if i[0] == '0':
+                modified_num = 0
+            else:
+                modified_num = i[0]
+
+        result = split_data[1].lstrip('0')
+
+        minute_to_seconds = 0  # Default value
+
+        if result:
+            number_int = int(result)
+            minute_to_seconds = number_int * 60
+
+        print(minute_to_seconds)
+
+        seconds = split_data[2]
+        result = split_data[1].lstrip('0')
+        sum2 = minute_to_seconds + int(seconds)
+        labels_day.append(city.video.title)
+        data_day.append(sum2)
+
+    # for city in progress_data:
+    #     label_all.append(city.video.title)
+    #     data_all.append(city.progress)
+    print(data_day)
 
     try:
         # Retrieve the user's Google account
@@ -63,15 +112,15 @@ def homePage(request):
         profile_picture_url = account.extra_data['picture']
     except SocialAccount.DoesNotExist:
         # Handle the case where the user is not authenticated with Google
-        profile_picture_url = None
+        profile_picture_url = 'https://cdn-icons-png.flaticon.com/512/847/847969.png?w=740&t=st=1687374249~exp=1687374849~hmac=72deea4d12874985a9ab2cf2f3395257508a1d82c4ef8861ab0251fbf82ee646'
 
-        def sum_times(user_times):
-            total_time = timedelta()
+    def sum_times(user_times):
+        total_time = timedelta()
 
-            for time_str in user_times:
-                hours, minutes, seconds = map(int, time_str.progress.split(':'))
-                time_delta = timedelta(hours=hours, minutes=minutes, seconds=seconds)
-                total_time += time_delta
+        for time_str in user_times:
+            hours, minutes, seconds = map(int, time_str.progress.split(':'))
+            time_delta = timedelta(hours=hours, minutes=minutes, seconds=seconds)
+            total_time += time_delta
 
             return total_time
 
@@ -101,6 +150,20 @@ def homePage(request):
     average_time_day = calculate_average(progress_data_day)
     average_time = calculate_average(progress_data)
     print(average_time_day)
+
+    def sum_numbers(numbers):
+        # Convert each element in the list to an integer
+        numbers = [int(num) for num in numbers]
+
+        # Calculate the sum of the numbers
+        total = sum(numbers)
+
+        return total
+
+    # Example usage
+    data_day = sum_numbers(data_day)
+    data_month = sum_numbers(data)
+
 
     # def _sum(arr):
 
@@ -137,7 +200,8 @@ def homePage(request):
     #     data_average = (ans / len(data))
     # except:
     #     data_average = 0
-    context = {'labels': labels, 'data_day': total_time_day, 'data': total_time, 'datachart': data, 'data_avg_day': average_time_day,
+    context = {'labels': labels, 'data_day': data_day, 'data': data_month, 'datachart': data,
+               'data_avg_day': average_time_day,
                'data_avg': average_time, 'msgnn': message_if_0,
                'profile_picture_url': profile_picture_url, 'goals': last_ten_goals, 'progress': progress_data}
     return render(request, 'base/index.html', context)
@@ -197,6 +261,7 @@ def loginPage(request):
 
     return render(request, 'base/login.html')
 
+
 @login_required(login_url='login')
 def updateUser(request):
     user = request.user
@@ -209,7 +274,6 @@ def updateUser(request):
             return redirect('home')
 
     return render(request, 'base/update-user.html', {'form': form})
-
 
 
 @login_required(login_url='login')
